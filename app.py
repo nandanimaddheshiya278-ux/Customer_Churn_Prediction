@@ -11,8 +11,6 @@ MODEL_PATH = os.path.join(
     "customer_churn_model.pkl"
 )
 
-model = joblib.load(MODEL_PATH)
-
 
 @app.route("/")
 def home():
@@ -21,6 +19,7 @@ def home():
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    model=joblib.load(MODEL_PATH)
 
     tenure = float(request.form["tenure"])
     monthly = float(request.form["MonthlyCharges"])
