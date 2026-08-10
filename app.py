@@ -1,14 +1,23 @@
 from flask import Flask, render_template, request
 import joblib
 import pandas as pd
+import os
 
 app = Flask(__name__)
 
-model = joblib.load("customer_churn_model.pkl")
+# Model ka correct absolute path
+MODEL_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "customer_churn_model.pkl"
+)
+
+model = joblib.load(MODEL_PATH)
+
 
 @app.route("/")
 def home():
     return render_template("index.html")
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -16,6 +25,7 @@ def predict():
     tenure = float(request.form["tenure"])
     monthly = float(request.form["MonthlyCharges"])
     total = float(request.form["TotalCharges"])
+
     contract = request.form["Contract"]
     payment = request.form["PaymentMethod"]
     internet = request.form["InternetService"]
@@ -40,7 +50,11 @@ def predict():
     else:
         result = "✅ Customer is likely to Stay"
 
-    return render_template("index.html", prediction_text=result)
+    return render_template(
+        "index.html",
+        prediction_text=result
+    )
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
