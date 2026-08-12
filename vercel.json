@@ -3,14 +3,7 @@
   "builds": [
     {
       "src": "app.py",
-      "use": "@vercel/python@4.2.0",
-      "config": {
-        "includeFiles": [
-          "templates/**",
-          "static/**",
-          "customer_churn_model.pkl"
-        ]
-      }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
